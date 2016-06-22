@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+DISTRIBUTION = $(shell lsb_release -sc)
+VERSION = $(shell xmlstarlet sel -T -t -v  '/*[local-name()="project"]/*[local-name()="version"]' ./pom.xml)
+DEBVERSION := $(subst -SNAPSHOT,~$(shell date +%Y%m%d-%H%M%S),$(VERSION))-0~$(DISTRIBUTION)0
+
+%:
+	dh $@
+
+override_dh_strip_nondeterminism:
+override_dh_auto_clean:
+override_dh_auto_build:
+	mvn package "assembly:single"
+
+override_dh_link:
+	dh_link usr/share/java/jsonevent-layout-$(VERSION).jar usr/share/java/log4j-jsonevent-layout.jar
+	dh_link usr/share/java/jsonevent-layout-$(VERSION)-jar-with-dependencies.jar usr/share/java/log4j-jsonevent-layout-standalone.jar
+
+override_dh_gencontrol:
+	dh_gencontrol -- -v$(DEBVERSION)

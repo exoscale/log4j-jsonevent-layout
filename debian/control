@@ -1,0 +1,11 @@
+Source: log4j-jsonevent-layout
+Maintainer: Vincent Bernat <bernat@debian.org>
+Build-Depends: debhelper (>= 9),
+               lsb-release, xmlstarlet,
+               default-jdk (>= 1:1.7) | java7-sdk | java8-sdk,
+               maven
+
+Package: log4j-jsonevent-layout
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: JSON Event v0/v1 formatter for log4j
